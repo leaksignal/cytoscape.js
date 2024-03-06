@@ -23543,8 +23543,6 @@ BRp$a.recalculateEdgeProjections = function (edges) {
   this.findEdgeControlPoints(edges);
 };
 
-/* global document */
-
 var BRp$9 = {};
 BRp$9.recalculateNodeLabelProjection = function (node) {
   var content = node.pstyle('label').strValue;
@@ -23956,6 +23954,8 @@ BRp$9.getLabelJustification = function (ele) {
 };
 BRp$9.calculateLabelDimensions = function (ele, text) {
   var r = this;
+  var containerWindow = r.cy.window();
+  var document = containerWindow.document;
   var cacheKey = hashString(text, ele._private.labelDimsKey);
   var cache = r.labelDimCache || (r.labelDimCache = []);
   var existingVal = cache[cacheKey];
@@ -24280,7 +24280,7 @@ BRp$4.getCachedImage = function (url, crossOrigin, onLoad) {
 
 var BRp$3 = {};
 
-/* global document, window, ResizeObserver, MutationObserver */
+/* global document, ResizeObserver, MutationObserver */
 
 BRp$3.registerBinding = function (target, event, handler, useCapture) {
   // eslint-disable-line no-unused-vars
@@ -25496,7 +25496,7 @@ BRp$3.load = function () {
     }
   }, false);
   var touchmoveHandler;
-  r.registerBinding(window, 'touchmove', touchmoveHandler = function touchmoveHandler(e) {
+  r.registerBinding(containerWindow, 'touchmove', touchmoveHandler = function touchmoveHandler(e) {
     // eslint-disable-line no-undef
     var capture = r.touchData.capture;
     if (!capture && !eventInContainer(e)) {
@@ -29796,8 +29796,9 @@ CRp$4.getPixelRatio = function () {
   if (this.forcedPixelRatio != null) {
     return this.forcedPixelRatio;
   }
+  var containerWindow = this.cy.window();
   var backingStore = context.backingStorePixelRatio || context.webkitBackingStorePixelRatio || context.mozBackingStorePixelRatio || context.msBackingStorePixelRatio || context.oBackingStorePixelRatio || context.backingStorePixelRatio || 1;
-  return (window.devicePixelRatio || 1) / backingStore; // eslint-disable-line no-undef
+  return (containerWindow.devicePixelRatio || 1) / backingStore; // eslint-disable-line no-undef
 };
 
 CRp$4.paintCache = function (context) {
@@ -30643,6 +30644,8 @@ CRp.MOTIONBLUR_BUFFER_NODE = 1;
 CRp.MOTIONBLUR_BUFFER_DRAG = 2;
 function CanvasRenderer(options) {
   var r = this;
+  var containerWindow = r.cy.window();
+  var document = containerWindow.document;
   r.data = {
     canvases: new Array(CRp.CANVAS_LAYERS),
     contexts: new Array(CRp.CANVAS_LAYERS),
@@ -30926,6 +30929,8 @@ CRp.makeOffscreenCanvas = function (width, height) {
   if ((typeof OffscreenCanvas === "undefined" ? "undefined" : _typeof(OffscreenCanvas)) !== ("undefined" )) {
     canvas = new OffscreenCanvas(width, height);
   } else {
+    var containerWindow = this.cy.window();
+    var document = containerWindow.document;
     canvas = document.createElement('canvas'); // eslint-disable-line no-undef
     canvas.width = width;
     canvas.height = height;
